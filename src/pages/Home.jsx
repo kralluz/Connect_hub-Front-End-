@@ -10,7 +10,7 @@ const Home = () => {
 
     useEffect(() => {
         if (!token) {
-            navigate("/");
+            navigate("/session");
         }
         autoLogin(token);
     }, [token]);
@@ -26,7 +26,7 @@ const Home = () => {
             {client && <h4>number phone: {client.phone}</h4>}
 
             <button onClick={clientLogout}>Logout</button>
-            <Link to="/">Session</Link>
+            <Link to="/session">Session</Link>
             <Link to="/register">register</Link>
 
             {contacts &&

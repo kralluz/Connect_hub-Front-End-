@@ -10,7 +10,7 @@ const Session = () => {
             <div>
                 <SessionForm />
             </div>
-            <Link to="/home">Home</Link>
+            <Link to="/">Home</Link>
             <Link to="/register">register</Link>
         </div>
     );

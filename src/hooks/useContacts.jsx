@@ -25,7 +25,7 @@ export const useClientState = () => {
             const response = await api.post("/clients", formData);
             if (response.status === 200) {
                 alert("Requisição POST bem-sucedida!");
-                //window.location.href = "/session";
+                window.location.href = "/session";
             }
             if (response.status != 200) {
                 alert("Requisição POST mal-sucedida!");
@@ -48,7 +48,7 @@ export const useClientState = () => {
             const clientData = response.data;
             setClient(clientData);
             alert("Login bem-sucedido!");
-            //window.location.href = "/home";
+            window.location.href = "/";
         } catch (error) {
             alert("🚀 ~ clientLogin ~ error:", error);
         }
@@ -59,7 +59,7 @@ export const useClientState = () => {
         localStorage.removeItem("@CONNECT_HUB_TOKEN");
         setClient(null);
         setContacts([]);
-        //window.location.href = "/session";
+        window.location.href = "/session";
     };
 
     return {
