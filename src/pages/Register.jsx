@@ -13,8 +13,8 @@ const Register = () => {
             <div>
                 <RegisterForm />
             </div>
-            <Link to="/">Dashboard</Link>
-            <Link to="/session">session</Link>
+            <Link to="/home">Dashboard</Link>
+            <Link to="/">session</Link>
         </div>
     );
 };
