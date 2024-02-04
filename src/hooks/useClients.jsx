@@ -8,26 +8,46 @@ export const useClientState = () => {
     const [contacts, setContacts] = useState([]);
     const [isToastDisplayed, setIsToastDisplayed] = useState(false);
 
-
     const autoLogin = async (token) => {
+        async function acordarBackend(url, maxTentativas = 5) {
+            for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+                try {
+                    console.log(
+                        `Tentativa ${tentativa} de acordar o back-end.`
+                    );
+                    const resposta = await fetch(url);
+                    if (resposta.ok) {
+                        console.log("Back-end acordado com sucesso!");
+                        break;
+                    } else {
+                        console.log(
+                            `Falha na tentativa ${tentativa}. Código de resposta: ${resposta.status}`
+                        );
+                    }
+                } catch (erro) {
+                    console.log(`Erro na tentativa ${tentativa}: ${erro}`);
+                }
+                await new Promise((resolve) =>
+                    setTimeout(resolve, 1000 * tentativa)
+                );
+            }
+        }
+
+        acordarBackend("https://connect-hub-back-end.onrender.com/clients");
         setIsLoading(true);
         if (token) {
             const { clientId } = JSON.parse(atob(token.split(".")[1]));
-            try {
-                const getClient = await api.get(`/clients/${clientId}`);
-                const getContacts = await api.get(`/contacts/`);
-                setContacts(getContacts.data);
-                setClient(getClient.data);
-            } catch (error) {
-                console.log("🚀 ~ autoLogin ~ error:", error.message);
-                alert("Erro ao fazer auto-login");
-            }
+            const getClient = await api.get(`/clients/${clientId}`);
+            const getContacts = await api.get(`/contacts/`);
+            setContacts(getContacts.data);
+            setClient(getClient.data);
         }
         setIsLoading(false);
     };
 
     const clientRegister = async (formData) => {
         setIsLoading(true);
+        localStorage.removeItem("@CONNECT_HUB_TOKEN");
         try {
             const response = await api.post("/clients", formData);
             if (response.status === 200) {
@@ -41,6 +61,8 @@ export const useClientState = () => {
             console.log("Error: " + error);
             toast.error("Erro ao fazer cadastro");
         }
+        setClient(false);
+        setContacts([]);
         setIsLoading(false);
     };
 

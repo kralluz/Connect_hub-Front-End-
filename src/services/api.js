@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const api = axios.create({
     baseURL: "https://connect-hub-back-end.onrender.com",
-    timeout: 8000,
+    timeout: 80000,
 });
 
 api.interceptors.request.use(
