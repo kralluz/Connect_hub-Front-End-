@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useClientState } from "../../hooks/useClients";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { zodRules } from "../../zodRules";
 
 const SessionForm = () => {
-    const [IsHidden, setIsHidden] = useState(true);
+    const [isHidden, setIsHidden] = useState(true);
     const { clientLogin } = useClientState();
     const {
         register,
@@ -14,9 +12,8 @@ const SessionForm = () => {
         formState: { errors },
     } = useForm();
 
-    const onSubmit = async (data) => {
-        clientLogin(data);
-        
+    const onSubmit = async (formData) => {
+        clientLogin(formData);
     };
 
     return (
@@ -25,9 +22,17 @@ const SessionForm = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label>E-mail:</label>
                 <input
+                    autoFocus
+                    id="email"
+                    type="email"
+                    placeholder="Email de usuário"
                     {...register("email", {
-                        required: true,
-                        pattern: /^\w+@[a-zA-Z]+\.\w+$/,
+                        required: "O campo de e-mail é obrigatório",
+                        pattern: {
+                            value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+                            message:
+                                "Por favor, insira um endereço de e-mail válido",
+                        },
                     })}
                 />
                 {errors.email && <p>{errors.email.message}</p>}
@@ -36,16 +41,25 @@ const SessionForm = () => {
                     <label>
                         password:
                         <input
-                            {...register("password")}
-                            type={IsHidden ? "password" : "text"}
+                            id="password"
+                            placeholder="Senha"
+                            type={isHidden ? "password" : "text"}
+                            {...register("password", {
+                                required: "Senha é obrigatória",
+                                minLength: {
+                                    value: 8,
+                                    message:
+                                        "A senha precisa ter no mínimo oito caracteres.",
+                                },
+                            })}
                         />
+                        {errors.password && <p>{errors.password.message}</p>}
                     </label>
-                    {errors.password && <span>{errors.password.message}</span>}
                     <button
                         type="button"
-                        onClick={() => setIsHidden(!IsHidden)}
+                        onClick={() => setIsHidden(!isHidden)}
                     >
-                        {IsHidden ? (
+                        {isHidden ? (
                             <MdVisibility color="black" />
                         ) : (
                             <MdVisibilityOff color="black" />

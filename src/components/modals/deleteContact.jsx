@@ -1,19 +1,29 @@
 import ModalBase from "./basedModal";
+import { useContactStState } from "../../hooks/useContacts";
+import { useContext } from "react";
+import { ContactContext } from "../../providers/contactProvider";
+import { api } from "../../services/api";
 
-const DeleteContactModal = ({ isOpen, onClose, contatoId, onDeletar }) => {
-    const handleDeletar = (e) => {
-        e.preventDefault();
-        // Lógica para deletar o contato
-        onDeletar(contatoId);
-        onClose(); // Fechar o modal após a deleção
+const DeleteContactModal = ({ isOpen, onClose, contact }) => {
+    const { deleteContact } = useContext(ContactContext);
+    const handleDeletar = async (e) => {
+        deleteContact(contact.id);
+
+        onClose();
     };
 
     return (
         <ModalBase isOpen={isOpen} onClose={onClose}>
-            <h2>Deletar Contato</h2>
-            <p>Tem certeza de que deseja deletar este contato?</p>
-            <button onClick={handleDeletar}>Deletar</button>
+            {contact && (
+                <div>
+                    <h2>Contato de {contact.name}</h2>
+                    <p>Tem certeza de que deseja deletar este contato?</p>
+                    <p>Esta ação é irreversível.</p>
+                    <button onClick={handleDeletar}>Deletar</button>
+                </div>
+            )}
         </ModalBase>
     );
 };
+
 export default DeleteContactModal;

@@ -4,22 +4,27 @@ import { toast } from "react-hot-toast";
 
 export const useClientState = () => {
     const [client, setClient] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [contacts, setContacts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const [isToastDisplayed, setIsToastDisplayed] = useState(false);
 
     const autoLogin = async (token) => {
+        setIsLoading(true);
         async function acordarBackend(url, maxTentativas = 5) {
             for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
                 try {
                     console.log(
                         `Tentativa ${tentativa} de acordar o back-end.`
                     );
-                    const resposta = await fetch(url);
-                    if (resposta.ok) {
+                    const response = await fetch(url);
+                    if (response.ok) {
                         console.log("Back-end acordado com sucesso!");
                         break;
-                    } else {
+                    } 
+                    if(response.status == 502){
+                        await fetch(url);
+                    }
+                    else {
                         console.log(
                             `Falha na tentativa ${tentativa}. Código de resposta: ${resposta.status}`
                         );
@@ -34,14 +39,20 @@ export const useClientState = () => {
         }
 
         acordarBackend("https://connect-hub-back-end.onrender.com/clients");
-        setIsLoading(true);
         if (token) {
             const { clientId } = JSON.parse(atob(token.split(".")[1]));
             const getClient = await api.get(`/clients/${clientId}`);
+            setClient(getClient.data);
             const getContacts = await api.get(`/contacts/`);
             setContacts(getContacts.data);
-            setClient(getClient.data);
         }
+        setIsLoading(false);
+    };
+
+    const fetchContacts = async () => {
+        setIsLoading(true);
+        const getContacts = await api.get(`/contacts/`);
+        setContacts(getContacts.data);
         setIsLoading(false);
     };
 
@@ -51,7 +62,6 @@ export const useClientState = () => {
         try {
             const response = await api.post("/clients", formData);
             if (response.status === 200) {
-                toast.success("Cadastro realizado com sucesso!");
                 window.location.href = "/session";
             } else {
                 toast.error("Erro ao fazer cadastro");
@@ -103,9 +113,11 @@ export const useClientState = () => {
         isToastDisplayed,
         setIsToastDisplayed,
         contacts,
+        setContacts,
         autoLogin,
         clientRegister,
         clientLogin,
         clientLogout,
+        fetchContacts,
     };
 };

@@ -16,6 +16,7 @@ const ShowContactModal = ({
         useState(false);
     const [isModalDelecaoContatoOpen, setModalDelecaoContatoOpen] =
         useState(false);
+
     const handleDeletar = (e) => {
         e.preventDefault();
         onDeletar(contatoId);
@@ -27,45 +28,47 @@ const ShowContactModal = ({
             <UpdateContactModal
                 isOpen={isModalAtualizacaoContatoOpen}
                 onClose={() => setModalAtualizacaoContatoOpen(false)}
-                contato={contact}
+                contact={contact}
             />
 
             <DeleteContactModal
                 isOpen={isModalDelecaoContatoOpen}
                 onClose={() => setModalDelecaoContatoOpen(false)}
-                contatoId={"1"}
-                onDeletar={(id) => console.log(`Deletar contato com ID ${id}`)}
+                contact={contact}
+                onDeletar={handleDeletar}
             />
-
-            <ModalBase isOpen={isOpen} onClose={onClose}>
-                <h2>Detalhes do Contato</h2>
-                <div>
-                    <strong>Nome:</strong> <span></span>
-                </div>
-                <div>
-                    <strong>E-mail:</strong> <span></span>
-                </div>
-                <div>
-                    <strong>Número:</strong> <span></span>
-                </div>
-                <button
-                    onClick={() => {
-                        onClose();
-                        setModalAtualizacaoContatoOpen(true);
-                    }}
-                >
-                    <FaEdit />
-                </button>
-                <button
-                    onClick={() => {
-                        onClose();
-                        setModalDelecaoContatoOpen(true);
-                    }}
-                >
-                    <FaTrashAlt />
-                </button>
-            </ModalBase>
+            {contact && (
+                <ModalBase isOpen={isOpen} onClose={onClose}>
+                    <h2>Detalhes do Contato</h2>
+                    <div>
+                        <strong>Nome:</strong> <span>{contact.name}</span>
+                    </div>
+                    <div>
+                        <strong>E-mail:</strong> <span>{contact.email}</span>
+                    </div>
+                    <div>
+                        <strong>Número:</strong> <span>{contact.phone}</span>
+                    </div>
+                    <button
+                        onClick={() => {
+                            onClose();
+                            setModalAtualizacaoContatoOpen(true);
+                        }}
+                    >
+                        <FaEdit />
+                    </button>
+                    <button
+                        onClick={() => {
+                            onClose();
+                            setModalDelecaoContatoOpen(true);
+                        }}
+                    >
+                        <FaTrashAlt />
+                    </button>
+                </ModalBase>
+            )}
         </>
     );
 };
+
 export default ShowContactModal;

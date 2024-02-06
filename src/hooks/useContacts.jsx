@@ -1,34 +1,32 @@
 import { useState } from "react";
 import { api } from "../services/api";
+import { useClientState } from "./useClients";
 
-export const useClientState = () => {
-    const [client, setClient] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [contacts, setContacts] = useState([]);
+export const useContactStState = () => {
+    const { contacts, setContacts } = useClientState();
+    const [isLoadingContacts, setIsLLoadingContacts] = useState(false);
 
-    const autoLogin = async (token) => {
+    const loadContacts = async () => {
+        setIsLLoadingContacts(true);
+        const token = localStorage.getItem("@CONNECT_HUB_TOKEN");
         if (token) {
-            const { clientId } = JSON.parse(atob(token.split(".")[1]));
             try {
-                const getClient = await api.get(`/clients/${clientId}`);
                 const getContacts = await api.get(`/contacts/`);
                 setContacts(getContacts.data);
-                setClient(getClient.data);
             } catch (error) {
                 console.log("🚀 ~ autoLogin ~ error:", error.message);
             }
         }
     };
 
-    const clientRegister = async (formData) => {
+    const createContact = async (formData) => {
         try {
-            const response = await api.post("/clients", formData);
+            const response = await api.post("/contacts", formData);
             if (response.status === 200) {
-                alert("Requisição POST bem-sucedida!");
-                window.location.href = "/session";
+                console.log("Requisição POST bem-sucedida!");
             }
             if (response.status != 200) {
-                alert("Requisição POST mal-sucedida!");
+                console.log("Requisição POST mal-sucedida!");
             }
         } catch (error) {
             console.log("Requisição POST mal-sucedida!");
@@ -36,41 +34,45 @@ export const useClientState = () => {
         }
     };
 
-    const clientLogin = async (formData) => {
-        setLoading(true);
+    const updateContact = async (contactId, formData) => {
         try {
-            const response = await api.post("/session", formData);
+            const response = await api.patch(
+                `/contacts/${contactId}`,
+                formData
+            );
             if (response.status === 200) {
-                alert("Requisição POST bem-sucedida!");
+                console.log("Requisição patch bem-sucedida!");
             }
-            const { token } = response.data;
-            localStorage.setItem("@CONNECT_HUB_TOKEN", token);
-            const clientData = response.data;
-            setClient(clientData);
-            alert("Login bem-sucedido!");
-            window.location.href = "/";
         } catch (error) {
-            alert("🚀 ~ clientLogin ~ error:", error);
+            console.log("Requisição patch mal-sucedida!");
+            console.log("Error: " + error);
         }
-        setLoading(false);
     };
 
-    const clientLogout = () => {
-        localStorage.removeItem("@CONNECT_HUB_TOKEN");
-        setClient(null);
-        setContacts([]);
-        window.location.href = "/session";
+    const deleteContact = async (contactId) => {
+        try {
+            const response = await api.delete(`/contacts/${contactId}`);
+            if (response.status === 204) {
+                console.log("Requisição DELETE bem-sucedida!");
+            }
+            if (response.status != 200) {
+                console.log(
+                    "Requisição DELETE mal-sucedida!" + response.status
+                );
+            }
+        } catch (error) {
+            console.log("Requisição DELETE mal-sucedida!" + error);
+            console.log("Error: " + error + contactId);
+        }
     };
-
     return {
-        client,
-        setClient,
-        loading,
-        setLoading,
         contacts,
-        autoLogin,
-        clientRegister,
-        clientLogin,
-        clientLogout,
+        setContacts,
+        isLoadingContacts,
+        setIsLLoadingContacts,
+        createContact,
+        deleteContact,
+        updateContact,
+        loadContacts,
     };
 };
