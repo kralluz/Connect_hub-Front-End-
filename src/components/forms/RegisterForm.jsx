@@ -29,9 +29,9 @@ const RegisterForm = () => {
             className="d-flex justify-content-center align-items-center"
             style={{ minHeight: "100vh" }}
         >
-            <div className="card" style={{ width: "400px" }}>
+            <div className="card mb-4" style={{ width: "400px" }}>
                 <div className="card-body">
-                    <h1 className="text-center mb-4">Cadastro de Cliente</h1>
+                    <h1 className="text-center mb-4">Crie sua conta</h1>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
