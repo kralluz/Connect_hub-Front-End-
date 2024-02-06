@@ -8,10 +8,11 @@ import UpdateClientModal from "../components/modals/updateClient";
 import UpdateContactModal from "../components/modals/updateContact";
 import DeleteContactModal from "../components/modals/deleteContact";
 import ShowContactModal from "../components/modals/showContact";
-import { FaEdit, FaUserEdit, FaTrashAlt } from "react-icons/fa";
-import { MdPersonAdd } from "react-icons/md";
+import { FaUserEdit, FaEye, FaTrashAlt } from "react-icons/fa";
+import { MdPersonAdd, MdEditNote } from "react-icons/md";
 import { ContactContext } from "../providers/contactProvider";
 import { ClientContext } from "../providers/clientProvier";
+
 
 const Home = () => {
     const { contacts } = useContext(ContactContext);
@@ -69,7 +70,7 @@ const Home = () => {
                 isOpen={isCreateOpen}
                 onClose={() => setCreateOpen(false)}
             />
-            <div className="container mt-5">
+            <div className="container-lg mt-5"> {/* Alterado para container-lg */}
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <button className="btn btn-outline-primary" onClick={clientLogout}>Logout</button>
@@ -82,53 +83,69 @@ const Home = () => {
                     </div>
                 </div>
 
-                <h1 className="mb-3">Página de Início</h1>
 
                 {client && (
-                    <div className="mb-4">
-                        <p>Bem-vindo {client.name}!!!</p>
-                        <p>
-                            Você está logado como {client.email} e seu número e telefone é {client.phone}
-                        </p>
+                    <div className="custom-max-width mb-4">
+                        <h3 className="mb-3">Olá {client.name} !</h3>
+                        <h5>
+                            Você está logado como {client.email} e seu número e
+                            telefone é {client.phone}
+                        </h5>
                     </div>
                 )}
+                <h3  className="custom-max-width mb-4">Lista de contatos: </h3>
 
                 {client && contacts && contacts.length > 0 ? (
                     contacts.map((contact) => (
-                        <div key={contact.id} className="mb-3">
+                        <div key={contact.id} className="custom-max-width mb-3">
+                            <hr  className="custom-max-width mb-4" />
                             <ShowContactModal
-                            isOpen={isShowOpen && modalContact?.id === contact.id}
-                            onClose={() => setShowOpen(false)}
-                            contatoId={modalContact?.id}
-                            contact={modalContact}
-                            onDelete={(id) =>
-                                console.log(`Deletar contato com ID ${id}`)
-                            }
-                        />
-                        <UpdateContactModal
-                            isOpen={isUpdateOpen}
-                            onClose={() => setUpdateOpen(false)}
-                            contact={contact}
-                        />
+                                isOpen={
+                                    isShowOpen &&
+                                    modalContact?.id === contact.id
+                                }
+                                onClose={() => setShowOpen(false)}
+                                contatoId={modalContact?.id}
+                                contact={modalContact}
+                                onDelete={(id) =>
+                                    console.log(`Deletar contato com ID ${id}`)
+                                }
+                            />
+                            <UpdateContactModal
+                                isOpen={isUpdateOpen}
+                                onClose={() => setUpdateOpen(false)}
+                                contact={contact}
+                            />
 
-                        <DeleteContactModal
-                            isOpen={isDeleteOpen}
-                            onClose={() => setDeleteOpen(false)}
-                            contact={contact}
-                            onDelete={(id) =>
-                                console.log(`Deletar contato com ID ${id}`)
-                            }
-                        />
+                            <DeleteContactModal
+                                isOpen={isDeleteOpen}
+                                onClose={() => setDeleteOpen(false)}
+                                contact={contact}
+                                onDelete={(id) =>
+                                    console.log(`Deletar contato com ID ${id}`)
+                                }
+                            />
                             <div className="d-flex justify-content-between align-items-center">
-                                <h3>{contact.name} - {contact.phone}</h3>
+                                <h3>{contact.name}</h3>
                                 <div>
-                                    <button className="btn btn-primary mx-1" onClick={() => openShowContactModal(contact)}>
-                                        Exibir
+                                    <button
+                                        className="btn btn-primary mx-1"
+                                        onClick={() =>
+                                            openShowContactModal(contact)
+                                        }
+                                    >
+                                        <FaEye />
                                     </button>
-                                    <button className="btn btn-warning mx-1" onClick={() => setUpdateOpen(true)}>
-                                        <FaEdit />
+                                    <button
+                                        className="btn btn-warning mx-1"
+                                        onClick={() => setUpdateOpen(true)}
+                                    >
+                                        <MdEditNote />
                                     </button>
-                                    <button className="btn btn-danger" onClick={() => setDeleteOpen(true)}>
+                                    <button
+                                        className="btn btn-danger"
+                                        onClick={() => setDeleteOpen(true)}
+                                    >
                                         <FaTrashAlt />
                                     </button>
                                 </div>
