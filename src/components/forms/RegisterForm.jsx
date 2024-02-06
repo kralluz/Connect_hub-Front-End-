@@ -220,11 +220,8 @@ const RegisterForm = () => {
                         </div>
                     </form>
                     <div className="mt-3 text-end">
-                        <Link to="/" className="btn btn-link">
-                            Dashboard
-                        </Link>
                         <Link to="/session" className="btn btn-link">
-                            Sessão
+                            Já tem uma conta? Faça login
                         </Link>
                     </div>
                 </div>

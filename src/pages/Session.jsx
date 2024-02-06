@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Link from "../components/Link";
+import { Link } from "react-router-dom"; // Ajuste para usar Link do 'react-router-dom' se ainda não estiver
 import SessionForm from "../components/forms/SessionForm";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useClientState } from "../hooks/useClients";
-
+import 'bootstrap/dist/css/bootstrap.min.css'; // Assegure-se que o Bootstrap CSS está importado
 
 const Session = () => {
     const {
@@ -30,16 +30,10 @@ const Session = () => {
     }, [token, isToastDisplayed, navigate, setIsToastDisplayed, autoLogin]);
 
     return (
-        <>
+        <div className="container mt-5">
             <Toaster />
-            <h1>Sessão</h1>
-            <p>Esta é a página de sessão. Aqui você pode fazer o login.</p>
-            <div>
-                <SessionForm />
-            </div>
-            <Link to="/">Home</Link>
-            <Link to="/register">register</Link>
-        </>
+            <SessionForm />
+        </div>
     );
 };
 

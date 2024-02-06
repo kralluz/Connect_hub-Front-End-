@@ -8,9 +8,7 @@ import UpdateClientModal from "../components/modals/updateClient";
 import UpdateContactModal from "../components/modals/updateContact";
 import DeleteContactModal from "../components/modals/deleteContact";
 import ShowContactModal from "../components/modals/showContact";
-import { FaEdit } from "react-icons/fa";
-import { FaUserEdit } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaUserEdit, FaTrashAlt } from "react-icons/fa";
 import { MdPersonAdd } from "react-icons/md";
 import { ContactContext } from "../providers/contactProvider";
 import { ClientContext } from "../providers/clientProvier";
@@ -19,19 +17,11 @@ const Home = () => {
     const { contacts } = useContext(ContactContext);
     const { client } = useContext(ClientContext);
 
-    const [isModalEdicaoPerfilOpen, setModalEdicaoPerfilOpen] = useState(false);
-
-    const [isModalExibicaoContatoOpen, setModalExibicaoContatoOpen] =
-        useState(false);
-
-    const [isModalCriacaoContatoOpen, setModalCriacaoContatoOpen] =
-        useState(false);
-
-    const [isModalAtualizacaoContatoOpen, setModalAtualizacaoContatoOpen] =
-        useState(false);
-
-    const [isModalDelecaoContatoOpen, setModalDelecaoContatoOpen] =
-        useState(false);
+    const [isEditOpen, setEditOpen] = useState(false);
+    const [isShowOpen, setShowOpen] = useState(false);
+    const [isCreateOpen, setCreateOpen] = useState(false);
+    const [isUpdateOpen, setUpdateOpen] = useState(false);
+    const [isDeleteOpen, setDeleteOpen] = useState(false);
     const [modalContact, setModalContact] = useState(null);
 
     const {
@@ -62,101 +52,94 @@ const Home = () => {
 
     const openShowContactModal = (contact) => {
         setModalContact(contact);
-        setModalExibicaoContatoOpen(true);
+        setShowOpen(true);
     };
 
     return (
         <>
             <Toaster />
+            <Toaster />
             <UpdateClientModal
-                isOpen={isModalEdicaoPerfilOpen}
-                onClose={() => setModalEdicaoPerfilOpen(false)}
+                isOpen={isEditOpen}
+                onClose={() => setEditOpen(false)}
                 client={client}
             />
 
             <CreateContactModal
-                isOpen={isModalCriacaoContatoOpen}
-                onClose={() => setModalCriacaoContatoOpen(false)}
+                isOpen={isCreateOpen}
+                onClose={() => setCreateOpen(false)}
             />
-
-            <button onClick={clientLogout}>Logout</button>
-            <Link to="/session">Session</Link>
-            <Link to="/register">register</Link>
-
-            <button onClick={() => setModalEdicaoPerfilOpen(true)}>
-                <FaUserEdit />
-            </button>
-            <button onClick={() => setModalCriacaoContatoOpen(true)}>
-                <MdPersonAdd />
-            </button>
-
-            <h1>Página de início</h1>
-
-            {client && (
-                <div>
-                    <p>Bem-vindo {client.name}!!!</p>
-                    <h4>Esta é página inicial. </h4>
-                    <h4>O seu id de usuário é ( {client.id} )</h4>
-                    <h4>O seu e-mail é: {client.email}</h4>
-                    <h4>O seu phone é: {client.phone}</h4>
+            <div className="container mt-5">
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <button className="btn btn-outline-primary" onClick={clientLogout}>Logout</button>
+                        <button className="btn btn-outline-secondary mx-2" onClick={() => setEditOpen(true)}>
+                            <FaUserEdit />
+                        </button>
+                        <button className="btn btn-success" onClick={() => setCreateOpen(true)}>
+                            <MdPersonAdd />
+                        </button>
+                    </div>
                 </div>
-            )}
 
-            {client && contacts && contacts.length > 0 ? (
-                contacts.map((contact) => (
-                    <div key={contact.id}>
-                        <ShowContactModal
-                            isOpen={
-                                isModalExibicaoContatoOpen &&
-                                modalContact?.id === contact.id
-                            }
-                            onClose={() => setModalExibicaoContatoOpen(false)}
+                <h1 className="mb-3">Página de Início</h1>
+
+                {client && (
+                    <div className="mb-4">
+                        <p>Bem-vindo {client.name}!!!</p>
+                        <p>
+                            Você está logado como {client.email} e seu número e telefone é {client.phone}
+                        </p>
+                    </div>
+                )}
+
+                {client && contacts && contacts.length > 0 ? (
+                    contacts.map((contact) => (
+                        <div key={contact.id} className="mb-3">
+                            <ShowContactModal
+                            isOpen={isShowOpen && modalContact?.id === contact.id}
+                            onClose={() => setShowOpen(false)}
                             contatoId={modalContact?.id}
                             contact={modalContact}
-                            onDeletar={(id) =>
+                            onDelete={(id) =>
                                 console.log(`Deletar contato com ID ${id}`)
                             }
                         />
                         <UpdateContactModal
-                            isOpen={isModalAtualizacaoContatoOpen}
-                            onClose={() =>
-                                setModalAtualizacaoContatoOpen(false)
-                            }
+                            isOpen={isUpdateOpen}
+                            onClose={() => setUpdateOpen(false)}
                             contact={contact}
                         />
 
                         <DeleteContactModal
-                            isOpen={isModalDelecaoContatoOpen}
-                            onClose={() => setModalDelecaoContatoOpen(false)}
+                            isOpen={isDeleteOpen}
+                            onClose={() => setDeleteOpen(false)}
                             contact={contact}
-                            onDeletar={(id) =>
+                            onDelete={(id) =>
                                 console.log(`Deletar contato com ID ${id}`)
                             }
                         />
-                        <div>
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h3>{contact.name} - {contact.phone}</h3>
+                                <div>
+                                    <button className="btn btn-primary mx-1" onClick={() => openShowContactModal(contact)}>
+                                        Exibir
+                                    </button>
+                                    <button className="btn btn-warning mx-1" onClick={() => setUpdateOpen(true)}>
+                                        <FaEdit />
+                                    </button>
+                                    <button className="btn btn-danger" onClick={() => setDeleteOpen(true)}>
+                                        <FaTrashAlt />
+                                    </button>
+                                </div>
+                            </div>
                             <hr />
-                            <h3>
-                                {contact.name}
-                                {contact.phone} {contact.email}
-                            </h3>
                         </div>
-                        <button onClick={() => openShowContactModal(contact)}>
-                            exibir contato
-                        </button>
-                        <button
-                            onClick={() => setModalAtualizacaoContatoOpen(true)}
-                        >
-                            <FaEdit />
-                        </button>
-                        <button onClick={() => setModalDelecaoContatoOpen(true)}>
-                            <FaTrashAlt />
-                        </button>
-                        <hr />
-                    </div>
-                ))
-            ) : (
-                <h2>Você não tem contatos.</h2>
-            )}
+                    ))
+                ) : (
+                    <h2 className="text-center">Você não tem contatos.</h2>
+                )}
+            </div>
         </>
     );
 };

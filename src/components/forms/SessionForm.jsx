@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useClientState } from "../../hooks/useClients";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { ClientContext } from "../../providers/clientProvier";
+import "bootstrap/dist/css/bootstrap.min.css"; // Certifique-se de importar o CSS do Bootstrap
+import { Link } from "react-router-dom";
 
 const SessionForm = () => {
     const [isHidden, setIsHidden] = useState(true);
@@ -18,59 +19,93 @@ const SessionForm = () => {
     };
 
     return (
-        <>
-            <h1>cliente</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>E-mail:</label>
-                <input
-                    autoFocus
-                    id="email"
-                    type="email"
-                    placeholder="Email de usuário"
-                    {...register("email", {
-                        required: "O campo de e-mail é obrigatório",
-                        pattern: {
-                            value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                            message:
-                                "Por favor, insira um endereço de e-mail válido",
-                        },
-                    })}
-                />
-                {errors.email && <p>{errors.email.message}</p>}
+        <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ minHeight: "100vh" }}
+        >
+            <div className="card" style={{ width: "400px" }}>
+                <div className="card-body">
+                    <h1 className="text-center mb-4">Login</h1>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">
+                                E-mail:
+                            </label>
+                            <input
+                                autoFocus
+                                id="email"
+                                type="email"
+                                className="form-control"
+                                placeholder="Email de usuário"
+                                {...register("email", {
+                                    required: "O campo de e-mail é obrigatório",
+                                    pattern: {
+                                        value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+                                        message:
+                                            "Por favor, insira um endereço de e-mail válido",
+                                    },
+                                })}
+                            />
+                            {errors.email && (
+                                <div className="alert alert-danger">
+                                    {errors.email.message}
+                                </div>
+                            )}
+                        </div>
 
-                <div>
-                    <label>
-                        password:
-                        <input
-                            id="password"
-                            placeholder="Senha"
-                            type={isHidden ? "password" : "text"}
-                            {...register("password", {
-                                required: "Senha é obrigatória",
-                                minLength: {
-                                    value: 8,
-                                    message:
-                                        "A senha precisa ter no mínimo oito caracteres.",
-                                },
-                            })}
-                        />
-                        {errors.password && <p>{errors.password.message}</p>}
-                    </label>
-                    <button
-                        type="button"
-                        onClick={() => setIsHidden(!isHidden)}
-                    >
-                        {isHidden ? (
-                            <MdVisibility color="black" />
-                        ) : (
-                            <MdVisibilityOff color="black" />
-                        )}
-                    </button>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">
+                                Senha:
+                            </label>
+                            <div className="input-group">
+                                <input
+                                    id="password"
+                                    className="form-control"
+                                    placeholder="Senha"
+                                    type={isHidden ? "password" : "text"}
+                                    {...register("password", {
+                                        required: "Senha é obrigatória",
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                "A senha precisa ter no mínimo oito caracteres.",
+                                        },
+                                    })}
+                                />
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    type="button"
+                                    onClick={() => setIsHidden(!isHidden)}
+                                >
+                                    {isHidden ? (
+                                        <MdVisibility />
+                                    ) : (
+                                        <MdVisibilityOff />
+                                    )}
+                                </button>
+                            </div>
+                            {errors.password && (
+                                <div className="alert alert-danger">
+                                    {errors.password.message}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="text-center">
+                            <button type="submit" className="btn btn-primary">
+                                Iniciar sessão
+                            </button>
+                        </div>
+                    </form>
+                    <div className="mt-3 text-end">
+                        {/* <Link className="btn btn-link" to="/forgot-password">
+                            Esqueceu a senha?
+                        </Link> */}
+                        <Link className="btn btn-link" to="/register">Cadastrar-se</Link>
+                    </div>
                 </div>
-
-                <button type="submit">Login</button>
-            </form>
-        </>
+            </div>
+        </div>
     );
 };
 
