@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useClientState } from "../../hooks/useClients";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { ClientContext } from "../../providers/clientProvier";
 
 const SessionForm = () => {
     const [isHidden, setIsHidden] = useState(true);
-    const { clientLogin } = useClientState();
+    const { clientLogin } = useContext(ClientContext);
     const {
         register,
         handleSubmit,

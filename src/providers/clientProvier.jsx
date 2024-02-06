@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { api } from "../services/api";
+import toast from "react-hot-toast";
 
 export const ClientContext = createContext({});
 
@@ -29,40 +30,81 @@ export const ClientProvider = ({ children }) => {
     const clientRegister = async (formData) => {
         setIsLoading(true);
         localStorage.removeItem("@CONNECT_HUB_TOKEN");
+
         try {
             const response = await api.post("/clients", formData);
             if (response.status === 200) {
+                toast.success("Cadastro realizado com sucesso!");
                 window.location.href = "/session";
             } else {
-                toast.error("Erro ao fazer cadastro");
+                throw new Error("Erro desconhecido");
             }
         } catch (error) {
-            console.log("Requisição POST mal-sucedida!");
-            console.log("Error: " + error);
-            toast.error("Erro ao fazer cadastro");
+            let errorMessage =
+                "Ocorreu um erro ao tentar registrar. Por favor, tente novamente.";
+            if (error.response) {
+                switch (error.response.status) {
+                    case 409:
+                        errorMessage =
+                            "Um usuário com este e-mail ou número já existe!";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            toast.error(errorMessage);
+        } finally {
+            setClient(false);
+            setIsLoading(false);
         }
-        setClient(false);
-        setIsLoading(false);
     };
 
     const clientLogin = async (formData) => {
         setIsLoading(true);
         try {
             const response = await api.post("/session", formData);
-            if (response.status === 200) {
-                toast.success("Login realizado com sucesso!");
+            let errorMessage =
+                "Ocorreu um erro ao tentar registrar. Por favor, tente novamente.";
+            switch (response.status) {
+                case 200:
+                    const { token, ...clientData } = response.data;
+                    localStorage.setItem("@CONNECT_HUB_TOKEN", token);
+                    setClient(clientData);
+                    toast.success("Login realizado com sucesso!");
+                    window.location.href = "/";
+                    break;
+                case 401:
+                    errorMessage =
+                        "🚀 Dados incorretos ou usuário não autorizado.";
+                    break;
+                default:
+                    break;
             }
-            const { token } = response.data;
-            localStorage.setItem("@CONNECT_HUB_TOKEN", token);
-            const clientData = response.data;
-            setClient(clientData);
-            toast.success("Login bem-sucedido!");
-            window.location.href = "/";
+            if (response.status !== 200) {
+                toast.error(errorMessage);
+            }
         } catch (error) {
-            console.log("🚀 ~ clientLogin ~ error:", error);
-            toast.error("Erro ao fazer login");
+            if (error.response) {
+                switch (error.response.status) {
+                    case 401:
+                        toast.error("Dados incorretos.");
+                        break;
+                    case 404:
+                        toast.error("Usuário não encontrado.");
+                        break;
+                    case 500:
+                        toast.error("Erro no servidor.");
+                        break;
+                    default:
+                        toast.error("Erro desconhecido ao tentar fazer login.");
+                        break;
+                }
+            } else {
+                toast.error("Erro ao tentar se conectar ao servidor.");
+            }
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
     };
 
     const updateClient = async (id, formData) => {

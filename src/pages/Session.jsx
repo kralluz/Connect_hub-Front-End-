@@ -10,10 +10,6 @@ const Session = () => {
     const {
         isToastDisplayed,
         setIsToastDisplayed,
-        isLoading,
-        contacts,
-        client,
-        clientLogout,
         autoLogin,
     } = useClientState();
     const token = localStorage.getItem("@CONNECT_HUB_TOKEN");

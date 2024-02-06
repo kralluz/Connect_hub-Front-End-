@@ -1,11 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AppRoutes from "./routes/AppRoutes";
 import { ContactProvider } from "./providers/contactProvider";
 import { ClientProvider } from "./providers/clientProvier";
+import { Toaster } from "react-hot-toast";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
     return (
         <div>
+            <Toaster />
             <ClientProvider>
                 <ContactProvider>
                     <AppRoutes />
