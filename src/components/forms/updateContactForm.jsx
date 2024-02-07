@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContactContext } from "../../providers/contactProvider";
- // Certifique-se de importar o CSS do Bootstrap
 
 const UpdateContactForm = ({ contact, onClose }) => {
-    const [ConfirmationOpen, setConfirmationOpen] = useState(false);
     const { updateContact } = useContext(ContactContext);
     const {
         register,
@@ -26,10 +24,27 @@ const UpdateContactForm = ({ contact, onClose }) => {
     }, [contact, reset]);
 
     const onSubmit = async (data) => {
+        data.name = data.name
+                .toLowerCase()
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+                .join(" ");
         const filteredData = Object.fromEntries(
             Object.entries(data).filter(([_, value]) => value !== "")
         );
+        if (!data.name && !data.phone) {
+            toast.error("Preencha pelo menos um dos campos: nome ou telefone");
+            return;
+        }
+        if(data.name === contact.name || data.phone === contact.phone) {
+            toast.error("Nenhum dado foi alterado");
+            return;
+        }
         await updateContact(contact.id, filteredData);
+        onClose();
+    };
+
+    const handleCancel = () => {
         onClose();
     };
 
@@ -74,6 +89,8 @@ const UpdateContactForm = ({ contact, onClose }) => {
 
                     <div className="text-center">
                         <button type="submit" className="btn btn-primary">Atualizar</button>
+                        {"  "}
+                        <button type="button" className="btn btn-danger" onClick={handleCancel}>Cancelar</button>
                     </div>
                 </form>
             )}

@@ -13,7 +13,8 @@ const UpdateContactModal = ({ isOpen, onClose, contact }) => {
         <ModalBase isOpen={isOpen} onClose={onClose}>
             {contact && (
                 <>
-                    <h2>Atualizar o contato de {contact.name}?</h2>
+                <br />  
+                    <h2 className="text-break">Atualizar o contato de {contact.name}?</h2>
                     <UpdateContactForm
                     contact={contact}
                     onClose={onClose}

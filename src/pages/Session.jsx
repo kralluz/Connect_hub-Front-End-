@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Ajuste para usar Link do 'react-router-dom' se ainda não estiver
+import React, { useEffect } from "react";
 import SessionForm from "../components/forms/SessionForm";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useClientState } from "../hooks/useClients";
- // Assegure-se que o Bootstrap CSS está importado
+import Header from "../components/Header";
 
 const Session = () => {
-    const {
-        isToastDisplayed,
-        setIsToastDisplayed,
-        autoLogin,
-    } = useClientState();
+    const { isToastDisplayed, setIsToastDisplayed, autoLogin } =
+        useClientState();
     const token = localStorage.getItem("@CONNECT_HUB_TOKEN");
     const navigate = useNavigate();
 
@@ -30,10 +26,12 @@ const Session = () => {
     }, [token, isToastDisplayed, navigate, setIsToastDisplayed, autoLogin]);
 
     return (
-        <div className="container mt-5">
-            <Toaster />
-            <SessionForm />
-        </div>
+        <>
+            <Header />
+            <div className="container mt-5">
+                <SessionForm />
+            </div>
+        </>
     );
 };
 

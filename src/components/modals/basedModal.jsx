@@ -1,6 +1,6 @@
 import React from "react";
 import { Transition } from "react-transition-group";
-import "./Modal.css";
+import "../../styles/Modal.css";
 
 const ModalBase = ({ children, isOpen, onClose }) => (
     <Transition in={isOpen} timeout={300} unmountOnExit>

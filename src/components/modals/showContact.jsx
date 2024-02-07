@@ -3,14 +3,14 @@ import ModalBase from "./basedModal";
 import UpdateContactModal from "./updateContact";
 import DeleteContactModal from "./deleteContact";
 import { FaTrashAlt } from "react-icons/fa";
-import { MdEditNote } from "react-icons/md";
 
 const ShowContactModal = ({
     isOpen,
     onClose,
-    contatoId,
+    contactId,
     onDeletar,
     contact,
+    setShowOpen,
 }) => {
     const [isModalAtualizacaoContatoOpen, setModalAtualizacaoContatoOpen] =
         useState(false);
@@ -19,15 +19,19 @@ const ShowContactModal = ({
 
     const handleDeletar = (e) => {
         e.preventDefault();
-        onDeletar(contatoId);
+        onDeletar(contactId);
         onClose();
     };
+
+    const formattedCreatedAt = new Date(contact.created_at).toLocaleString();
 
     return (
         <>
             <UpdateContactModal
                 isOpen={isModalAtualizacaoContatoOpen}
-                onClose={() => setModalAtualizacaoContatoOpen(false)}
+                onClose={() => {
+                    setModalAtualizacaoContatoOpen(false);
+                }}
                 contact={contact}
             />
 
@@ -39,36 +43,48 @@ const ShowContactModal = ({
             />
             {contact && (
                 <ModalBase isOpen={isOpen} onClose={onClose}>
-                    <div className="text-center">
-                        <h2>Detalhes do Contato</h2>
-                        <div>
-                            <strong>Nome:</strong> <span>{contact.name}</span>
+                    <>
+                        <div className="text-justify">
+                            <h2>Detalhes do Contato</h2>
+                            <div>
+                                <strong>Nome:</strong>{" "}
+                                <span>{contact.name}</span>
+                            </div>
+                            <div>
+                                <strong>E-mail:</strong>{" "}
+                                <span>{contact.email}</span>
+                            </div>
+                            <div>
+                                <strong>Número:</strong>{" "}
+                                <span>{contact.phone}</span>
+                            </div>
+                            <div>
+                                <strong>Data de criação:</strong>{" "}
+                                <span>{formattedCreatedAt}</span>
+                            </div>
                         </div>
-                        <div>
-                            <strong>E-mail:</strong> <span>{contact.email}</span>
-                        </div>
-                        <div>
-                            <strong>Número:</strong> <span>{contact.phone}</span>
-                        </div>
-                        <div className="mt-3">
+
+                        <div className="mt-3 text-center"> {/* BEGIN: Center align buttons */}
                             <button
                                 className="btn btn-primary me-2"
                                 onClick={() => {
+                                    setShowOpen(false);
                                     setModalAtualizacaoContatoOpen(true);
                                 }}
                             >
-                                <MdEditNote/>
+                                Editar contato
                             </button>
                             <button
                                 className="btn btn-danger"
                                 onClick={() => {
+                                    setShowOpen(false);
                                     setModalDelecaoContatoOpen(true);
                                 }}
                             >
-                                <FaTrashAlt/>
+                                <FaTrashAlt />
                             </button>
-                        </div>
-                    </div>
+                        </div> {/* END: Center align buttons */}
+                    </>
                 </ModalBase>
             )}
         </>

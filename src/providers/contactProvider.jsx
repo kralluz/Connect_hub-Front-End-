@@ -5,6 +5,9 @@ export const ContactContext = createContext({});
 
 export const ContactProvider = ({ children }) => {
     const [contacts, setContacts] = useState();
+    console.log("🚀 ~ ContactProvider ~ contacts:", contacts)
+    console.log("🚀 ~ ContactProvider ~ contacts:", contacts)
+    console.log("🚀 ~ ContactProvider ~ contacts:", contacts)
 
     const token = localStorage.getItem("@CONNECT_HUB_TOKEN");
 
