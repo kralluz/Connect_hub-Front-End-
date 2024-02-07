@@ -23,7 +23,10 @@ const ShowContactModal = ({
         onClose();
     };
 
-    const formattedCreatedAt = new Date(contact.created_at).toLocaleString();
+    let formattedCreatedAt = "";    
+    if(contact){
+        formattedCreatedAt = new Date(contact.created_at).toLocaleString();
+    }
 
     return (
         <>
