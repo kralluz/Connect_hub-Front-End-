@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css"; // Certifique-se de importar o CSS do Bootstrap
-import { ClientContext } from "../../providers/clientProvier";
+import { ClientContext } from "../../providers/clientProvider";
 import { Link } from "react-router-dom";
 
 const RegisterForm = () => {

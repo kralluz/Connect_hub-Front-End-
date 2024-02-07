@@ -2,8 +2,8 @@ import { useState } from "react";
 import ModalBase from "./basedModal";
 import UpdateContactModal from "./updateContact";
 import DeleteContactModal from "./deleteContact";
-import { FaEdit } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
+import { MdEditNote } from "react-icons/md";
 
 const ShowContactModal = ({
     isOpen,
@@ -39,32 +39,36 @@ const ShowContactModal = ({
             />
             {contact && (
                 <ModalBase isOpen={isOpen} onClose={onClose}>
-                    <h2>Detalhes do Contato</h2>
-                    <div>
-                        <strong>Nome:</strong> <span>{contact.name}</span>
+                    <div className="text-center">
+                        <h2>Detalhes do Contato</h2>
+                        <div>
+                            <strong>Nome:</strong> <span>{contact.name}</span>
+                        </div>
+                        <div>
+                            <strong>E-mail:</strong> <span>{contact.email}</span>
+                        </div>
+                        <div>
+                            <strong>Número:</strong> <span>{contact.phone}</span>
+                        </div>
+                        <div className="mt-3">
+                            <button
+                                className="btn btn-primary me-2"
+                                onClick={() => {
+                                    setModalAtualizacaoContatoOpen(true);
+                                }}
+                            >
+                                <MdEditNote/>
+                            </button>
+                            <button
+                                className="btn btn-danger"
+                                onClick={() => {
+                                    setModalDelecaoContatoOpen(true);
+                                }}
+                            >
+                                <FaTrashAlt/>
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <strong>E-mail:</strong> <span>{contact.email}</span>
-                    </div>
-                    <div>
-                        <strong>Número:</strong> <span>{contact.phone}</span>
-                    </div>
-                    <button
-                        onClick={() => {
-                            onClose();
-                            setModalAtualizacaoContatoOpen(true);
-                        }}
-                    >
-                        <FaEdit />
-                    </button>
-                    <button
-                        onClick={() => {
-                            onClose();
-                            setModalDelecaoContatoOpen(true);
-                        }}
-                    >
-                        <FaTrashAlt />
-                    </button>
                 </ModalBase>
             )}
         </>

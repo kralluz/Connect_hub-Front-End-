@@ -4,7 +4,7 @@ import SessionForm from "../components/forms/SessionForm";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useClientState } from "../hooks/useClients";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Assegure-se que o Bootstrap CSS está importado
+ // Assegure-se que o Bootstrap CSS está importado
 
 const Session = () => {
     const {

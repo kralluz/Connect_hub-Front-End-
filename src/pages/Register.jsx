@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Certifique-se de importar Link de 'react-router-dom' se estiver usando essa biblioteca para rotas
 import RegisterForm from "../components/forms/RegisterForm";
-import 'bootstrap/dist/css/bootstrap.min.css'; // Assegure-se que o Bootstrap CSS está importado
+ // Assegure-se que o Bootstrap CSS está importado
 
 const Register = () => {
     const token = localStorage.getItem("@CONNECT_HUB_TOKEN");

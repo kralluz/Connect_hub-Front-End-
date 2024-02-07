@@ -2,17 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { useClientState } from "../hooks/useClients";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import Link from "../components/Link";
 import CreateContactModal from "../components/modals/createContact";
 import UpdateClientModal from "../components/modals/updateClient";
 import UpdateContactModal from "../components/modals/updateContact";
 import DeleteContactModal from "../components/modals/deleteContact";
 import ShowContactModal from "../components/modals/showContact";
 import { FaUserEdit, FaEye, FaTrashAlt } from "react-icons/fa";
-import { MdPersonAdd, MdEditNote } from "react-icons/md";
+import { MdPersonAdd, MdEditNote, MdLogout } from "react-icons/md";
 import { ContactContext } from "../providers/contactProvider";
-import { ClientContext } from "../providers/clientProvier";
-
+import { ClientContext } from "../providers/clientProvider";
+import { Tooltip } from "react-tooltip";
+import ContactItem from "../components/ContactItem";
 
 const Home = () => {
     const { contacts } = useContext(ContactContext);
@@ -59,7 +59,8 @@ const Home = () => {
     return (
         <>
             <Toaster />
-            <Toaster />
+            <Tooltip id="my-tooltip" />
+
             <UpdateClientModal
                 isOpen={isEditOpen}
                 onClose={() => setEditOpen(false)}
@@ -70,19 +71,41 @@ const Home = () => {
                 isOpen={isCreateOpen}
                 onClose={() => setCreateOpen(false)}
             />
-            <div className="container-lg mt-5"> {/* Alterado para container-lg */}
+
+            <div className="container-lg mt-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <div>
-                        <button className="btn btn-outline-primary" onClick={clientLogout}>Logout</button>
-                        <button className="btn btn-outline-secondary mx-2" onClick={() => setEditOpen(true)}>
+                        <button
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content="Encerrar sessão"
+                            data-tooltip-place="bottom"
+                            className="btn btn-outline-primary"
+                            onClick={clientLogout}
+                        >
+                            <MdLogout />
+                        </button>
+
+                        <button
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content="Editar meu perfil"
+                            data-tooltip-place="bottom"
+                            className="btn btn-outline-secondary mx-2"
+                            onClick={() => setEditOpen(true)}
+                        >
                             <FaUserEdit />
                         </button>
-                        <button className="btn btn-success" onClick={() => setCreateOpen(true)}>
+
+                        <button
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content="adicionar contato"
+                            data-tooltip-place="bottom"
+                            className="btn btn-success"
+                            onClick={() => setCreateOpen(true)}
+                        >
                             <MdPersonAdd />
                         </button>
                     </div>
                 </div>
-
 
                 {client && (
                     <div className="custom-max-width mb-4">
@@ -93,66 +116,53 @@ const Home = () => {
                         </h5>
                     </div>
                 )}
-                <h3  className="custom-max-width mb-4">Lista de contatos: </h3>
 
+                <h3 className="custom-max-width mb-4">Lista de contatos: </h3>
                 {client && contacts && contacts.length > 0 ? (
-                    contacts.map((contact) => (
-                        <div key={contact.id} className="custom-max-width mb-3">
-                            <hr  className="custom-max-width mb-4" />
-                            <ShowContactModal
-                                isOpen={
-                                    isShowOpen &&
-                                    modalContact?.id === contact.id
-                                }
-                                onClose={() => setShowOpen(false)}
-                                contatoId={modalContact?.id}
-                                contact={modalContact}
-                                onDelete={(id) =>
-                                    console.log(`Deletar contato com ID ${id}`)
-                                }
-                            />
-                            <UpdateContactModal
-                                isOpen={isUpdateOpen}
-                                onClose={() => setUpdateOpen(false)}
-                                contact={contact}
-                            />
+                    contacts
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((contact) => (
+                            <>
+                                <ShowContactModal
+                                    isOpen={
+                                        isShowOpen &&
+                                        modalContact?.id === contact.id
+                                    }
+                                    onClose={() => setShowOpen(false)}
+                                    contatoId={modalContact?.id}
+                                    contact={modalContact}
+                                    onDelete={(id) =>
+                                        console.log(
+                                            `Deletar contato com ID ${id}`
+                                        )
+                                    }
+                                />
 
-                            <DeleteContactModal
-                                isOpen={isDeleteOpen}
-                                onClose={() => setDeleteOpen(false)}
-                                contact={contact}
-                                onDelete={(id) =>
-                                    console.log(`Deletar contato com ID ${id}`)
-                                }
-                            />
-                            <div className="d-flex justify-content-between align-items-center">
-                                <h3>{contact.name}</h3>
-                                <div>
-                                    <button
-                                        className="btn btn-primary mx-1"
-                                        onClick={() =>
-                                            openShowContactModal(contact)
-                                        }
-                                    >
-                                        <FaEye />
-                                    </button>
-                                    <button
-                                        className="btn btn-warning mx-1"
-                                        onClick={() => setUpdateOpen(true)}
-                                    >
-                                        <MdEditNote />
-                                    </button>
-                                    <button
-                                        className="btn btn-danger"
-                                        onClick={() => setDeleteOpen(true)}
-                                    >
-                                        <FaTrashAlt />
-                                    </button>
-                                </div>
-                            </div>
-                            <hr />
-                        </div>
-                    ))
+                                <UpdateContactModal
+                                    isOpen={isUpdateOpen}
+                                    onClose={() => setUpdateOpen(false)}
+                                    contact={contact}
+                                />
+
+                                <DeleteContactModal
+                                    isOpen={isDeleteOpen}
+                                    onClose={() => setDeleteOpen(false)}
+                                    contact={contact}
+                                    onDelete={(id) =>
+                                        console.log(
+                                            `Deletar contato com ID ${id}`
+                                        )
+                                    }
+                                />
+                                <ContactItem
+                                    key={contact.id}
+                                    contact={contact}
+                                    onShow={openShowContactModal}
+                                    onUpdate={() => setUpdateOpen(true)}
+                                    onDelete={() => setDeleteOpen(true)}
+                                />
+                            </>
+                        ))
                 ) : (
                     <h2 className="text-center">Você não tem contatos.</h2>
                 )}

@@ -1,14 +1,12 @@
 import ModalBase from "./basedModal";
-import { useContactStState } from "../../hooks/useContacts";
 import { useContext } from "react";
 import { ContactContext } from "../../providers/contactProvider";
-import { api } from "../../services/api";
 
 const DeleteContactModal = ({ isOpen, onClose, contact }) => {
     const { deleteContact } = useContext(ContactContext);
+
     const handleDeletar = async (e) => {
         deleteContact(contact.id);
-
         onClose();
     };
 
@@ -16,10 +14,13 @@ const DeleteContactModal = ({ isOpen, onClose, contact }) => {
         <ModalBase isOpen={isOpen} onClose={onClose}>
             {contact && (
                 <div>
-                    <h2>Contato de {contact.name}</h2>
-                    <p>Tem certeza de que deseja deletar este contato?</p>
-                    <p>Esta ação é irreversível.</p>
-                    <button onClick={handleDeletar}>Deletar</button>
+                    <h2>Deletar este contato? </h2>
+                    <h6>Tem certeza de que deseja deletar o contato de {contact.name}?</h6>
+                    <p>Esta ação é irreversível</p>
+                    <div className="text-center mt-4">
+                        <button onClick={handleDeletar} className="btn btn-danger">Deletar</button>
+                        <button onClick={onClose} className="btn btn-secondary ms-2">Cancelar</button>
+                    </div>
                 </div>
             )}
         </ModalBase>

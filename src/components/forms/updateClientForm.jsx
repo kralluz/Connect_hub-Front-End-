@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ClientContext } from "../../providers/clientProvier";
+import { ClientContext } from "../../providers/clientProvider";
+
+
 
 const UpdateClientForm = ({ client, onClose }) => {
     const [ConfirmationOpen, setConfirmationOpen] = useState(false);
@@ -11,13 +13,18 @@ const UpdateClientForm = ({ client, onClose }) => {
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            name: client ? client.name : "",
+            phone: client ? client.phone : "",
+        }
+    });
 
     useEffect(() => {
         if (client) {
             reset({
-                name: "",
-                phone: "",
+                name: client.name,
+                phone: client.phone,
             });
         }
     }, [client, reset]);
@@ -33,32 +40,58 @@ const UpdateClientForm = ({ client, onClose }) => {
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input
-                    autoFocus
-                    id="name"
-                    placeholder="Novo nome"
-                    {...register("name", {
-                        required: "Este campo é obrigatório",
-                        pattern: {
-                            value: /^.{6,}$/,
-                            message: "O nome deve ter no mínimo 6 caracteres",
-                        },
-                    })}
-                />
-                {errors.name && <p>{errors.name.message}</p>}
-                <br />
-                <h6>
-                    Email: Por motivos de segurança, não permitimos alterações
-                    de email.
-                </h6>
-                <br />
-                <input {...register("phone")} placeholder="Novo número" />
-                {errors.phone && <p>{errors.phone.message}</p>}
-                <button type="submit">Atualizar</button>
+        <div className="container mt-3">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-100 mx-auto" style={{ maxWidth: "600px" }}>
+                <div className="mb-3">
+                    <input
+                        autoFocus
+                        id="name"
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                        placeholder="Novo nome"
+                        {...register("name", {
+                            pattern: {
+                                value: /^.{6,}$/,
+                                message: "O nome deve ter no mínimo 6 caracteres",
+                            },
+                        })}
+                    />
+                    {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                </div>
+
+                <div className="mb-3">
+                    <input
+                    disabled
+                        id="email"
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                        placeholder={client.email}
+                        {...register("email",{
+                            pattern: {
+                                value: /^.{6,}$/,
+                                message: "O nome deve ter no mínimo 6 caracteres",
+                            },
+                        })}
+                    />
+                    {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                </div>
+                
+                <div className="mb-3">
+                    <p className="ps-3">Por motivos de segurança, não permitimos alterações de email.</p>
+                </div>
+                
+                <div className="mb-3">
+                    <input
+                        className="form-control"
+                        {...register("phone")}
+                        placeholder="Novo número"
+                    />
+                    {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
+                </div>
+                
+                <div className="text-center">
+                    <button type="submit" className="btn btn-primary">Atualizar</button>
+                </div>
             </form>
-        </>
+        </div>
     );
 };
 
