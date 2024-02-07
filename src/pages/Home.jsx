@@ -74,7 +74,7 @@ const Home = () => {
                             data-tooltip-content="Adicionar Contato"
                             data-tooltip-place="bottom"
                             className="btn btn-success rounded-circle"
-                            style={{ width: "4vw", height: "4vw", position: 'fixed', bottom: '10%', right: '10%'  }}
+                            style={{ width: "80px", height: "80px", position: 'fixed', bottom: '10%', right: '10%'  }}
                             onClick={() => setCreateOpen(true)}
                         >
                             <MdPersonAdd style={{ fontSize: "2vw" }} />
