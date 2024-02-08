@@ -1,7 +1,7 @@
 # ConnectHub - Front-end
 
 ## Sobre o Projeto
-ConnectHub é uma aplicação web desenvolvida para facilitar o gerenciamento de clientes e seus contatos. Este repositório contém o front-end da aplicação, construído com [React.js](https://reactjs.org/) (ou substitua pelo framework/lib que usou).
+ConnectHub é uma aplicação web desenvolvida para facilitar o gerenciamento de clientes e seus contatos. Este repositório contém o front-end da aplicação, construído com React.js + Vite.js.
 
 ## Pré-requisitos
 Antes de iniciar, certifique-se de ter instalado:
@@ -12,7 +12,7 @@ Antes de iniciar, certifique-se de ter instalado:
 Para configurar o ambiente de desenvolvimento, siga os passos abaixo:
 
 1. Clone o repositório:
-git clone <URL_DO_REPOSITÓRIO_FRONT-END>
+git clone <https://github.com/kralluz/Connect_hub-Front-End-.git>
 
 csharp
 Copy code
@@ -25,26 +25,8 @@ Copy code
 
 ## Executando o Projeto
 Para rodar o projeto localmente, execute:
-npm start
+npm run dev
 
 bash
 Copy code
 O aplicativo estará disponível em `http://localhost:3000`.
-
-## Testes
-Para executar os testes, utilize o comando:
-npm test
-
-markdown
-Copy code
-
-## Contribuindo
-Para contribuir com o projeto, siga os passos:
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Faça o commit das suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-## Licença
-Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
