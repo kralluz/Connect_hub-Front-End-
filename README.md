@@ -1,5 +1,7 @@
 # ConnectHub - Front-end
 
+## acesse a versão em proução no vercel em [conenct Hub Proução](https://connect-hub-front-end.vercel.app/)
+
 ## Sobre o Projeto
 ConnectHub é uma aplicação web desenvolvida para facilitar o gerenciamento de clientes e seus contatos. Este repositório contém o front-end da aplicação, construído com React.js + Vite.js.
 
