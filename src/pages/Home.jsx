@@ -77,7 +77,7 @@ const Home = () => {
                             style={{ width: "80px", height: "80px", position: 'fixed', bottom: '10%', right: '10%'  }}
                             onClick={() => setCreateOpen(true)}
                         >
-                            <MdPersonAdd style={{ fontSize: "40px" }} />
+                            <MdPersonAdd style={{ fontSize: "35px" }} />
                         </button>
                     </div>
                 </div>
