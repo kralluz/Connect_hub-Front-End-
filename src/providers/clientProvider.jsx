@@ -1,12 +1,14 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../services/api";
 import toast from "react-hot-toast";
+import { ContactContext } from "./contactProvider";
 
 export const ClientContext = createContext({});
 
 export const ClientProvider = ({ children }) => {
     const [client, setClient] = useState();
     const [isLoading, setIsLoading] = useState();
+    const {setContacts} = useContext(ContactContext);
 
     const token = localStorage.getItem("@CONNECT_HUB_TOKEN");
 
@@ -17,7 +19,7 @@ export const ClientProvider = ({ children }) => {
                 const { data } = await api.get(`/clients/${clientId}`);
                 setClient(data);
             } catch (error) {
-                console.log("🚀🚀🚀~ autoLogin ~ error:", error.message);
+                toast.error("Houve um erro, consulte o fornecedor")
             }
         }
     };
@@ -33,11 +35,11 @@ export const ClientProvider = ({ children }) => {
 
         try {
             const response = await api.post("/clients", formData);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 toast.success("Cadastro realizado com sucesso!");
                 window.location.href = "/session";
             } else {
-                throw new Error("Erro desconhecido");
+                toast.error("Erro desconhecido");
             }
         } catch (error) {
             let errorMessage =
@@ -113,12 +115,11 @@ export const ClientProvider = ({ children }) => {
             try {
                 const response = await api.patch(`/clients/${id}`, formData);
                 if (response.status === 200) {
-                    console.log("Requisição PATCH bem-sucedida!");
+                    toast("atualizado com sucesso");
                     readClient();
                 }
             } catch (error) {
-                console.log("Requisição PATCH mal-sucedida!");
-                console.log("Error: " + error);
+                toast.error("Houve um erro, consulte o fornecedor")
             }
         }
         setIsLoading(false);

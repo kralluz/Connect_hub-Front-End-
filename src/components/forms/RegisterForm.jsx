@@ -18,10 +18,10 @@ const RegisterForm = () => {
 
     const onSubmit = async (data) => {
         if (data.password !== data.confirmPassword) {
-            console.log("As senhas não coincidem");
+            toast("As senhas não coincidem");
             return;
         }
-        await clientRegister(data);
+            await clientRegister(data);
     };
 
     return (

@@ -13,24 +13,24 @@ export const useClientState = () => {
         async function acordarBackend(url, maxTentativas = 5) {
             for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
                 try {
-                    console.log(
+                    toast(
                         `Tentativa ${tentativa} de acordar o back-end.`
                     );
                     const response = await fetch(url);
                     if (response.ok) {
-                        console.log("Back-end acordado com sucesso!");
+                        toast.success("Back-end acordado com sucesso!");
                         break;
                     } 
                     if(response.status == 502){
                         await fetch(url);
                     }
                     else {
-                        console.log(
+                        toast.error(
                             `Falha na tentativa ${tentativa}. Código de resposta: ${resposta.status}`
                         );
                     }
                 } catch (erro) {
-                    console.log(`Erro na tentativa ${tentativa}: ${erro}`);
+                    toast.error(`Erro na tentativa ${tentativa}: ${erro}`);
                 }
                 await new Promise((resolve) =>
                     setTimeout(resolve, 1000 * tentativa)
@@ -59,18 +59,12 @@ export const useClientState = () => {
     const clientRegister = async (formData) => {
         setIsLoading(true);
         localStorage.removeItem("@CONNECT_HUB_TOKEN");
-        try {
             const response = await api.post("/clients", formData);
             if (response.status === 200) {
                 window.location.href = "/session";
             } else {
-                toast.error("Erro ao fazer cadastro");
+                toast.error("Erro ao fazer cadastro ,consulte o fornecedor");
             }
-        } catch (error) {
-            console.log("Requisição POST mal-sucedida!");
-            console.log("Error: " + error);
-            toast.error("Erro ao fazer cadastro");
-        }
         setClient(false);
         setContacts([]);
         setIsLoading(false);
@@ -90,8 +84,7 @@ export const useClientState = () => {
             toast.success("Login bem-sucedido!");
             window.location.href = "/";
         } catch (error) {
-            console.log("🚀 ~ clientLogin ~ error:", error);
-            toast.error("Erro ao fazer login");
+            toast.error("Erro ao fazer login, consulte o fornecedor");
         }
         setIsLoading(false);
     };

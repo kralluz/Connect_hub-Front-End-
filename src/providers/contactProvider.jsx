@@ -1,26 +1,28 @@
 import { createContext, useEffect, useState } from "react";
 import { api } from "../services/api";
+import toast from "react-hot-toast";
 
 export const ContactContext = createContext({});
 
 export const ContactProvider = ({ children }) => {
     const [contacts, setContacts] = useState();
-    console.log("🚀 ~ ContactProvider ~ contacts:", contacts)
-    console.log("🚀 ~ ContactProvider ~ contacts:", contacts)
-    console.log("🚀 ~ ContactProvider ~ contacts:", contacts)
 
     const token = localStorage.getItem("@CONNECT_HUB_TOKEN");
 
     const createContact = async (formData) => {
-        try {
-            const response = await api.post("/contacts", formData);
-            readAllContacts();
-            if (response.status === 200) {
-                console.log("Requisição POST bem-sucedida!");
-            }
-        } catch (error) {
-            console.log("Requisição POST mal-sucedida!");
-            console.log("Error: " + error);
+        const response = await api.post("/contacts", formData);
+        readAllContacts();
+        if (response.status === 200) {
+            toast.success("Contato adicionado com sucesso");
+        }
+        if (response.status === 409) {
+            toast.error("Já existe um contato com estes dados!");
+        }
+        if (response.status === 400) {
+            toast.error("Dados inválidos");
+        }
+        if (response.status === 500) {
+            toast.error("Erro no servidor");
         }
     };
 
@@ -29,7 +31,7 @@ export const ContactProvider = ({ children }) => {
             const { data } = await api.get("/contacts");
             setContacts(data);
         } catch (error) {
-            console.log("🚀🚀🚀~ autoLogin ~ error:", error.message);
+            toast.error("Houve um erro, consulte o fornecedor");
         }
     };
     useEffect(() => {
@@ -46,7 +48,7 @@ export const ContactProvider = ({ children }) => {
             );
             await readAllContacts();
         } catch (error) {
-            console.log("🚀 ~ contactUpdate ~ error:", error);
+            toast.error("Houve um erro, consulte o fornecedor");
         }
     };
 
@@ -54,12 +56,11 @@ export const ContactProvider = ({ children }) => {
         try {
             const response = await api.delete(`/contacts/${contactId}`);
             if (response.status === 204) {
-                console.log("Requisição DELETE bem-sucedida!");
+                toast.success("Deletado com sucesso");
             }
             await readAllContacts();
         } catch (error) {
-            console.log("Requisição DELETE mal-sucedida!" + error);
-            console.log("Error: " + error + contactId);
+            toast.error("Houve um erro, consulte o fornecedor");
         }
     };
 

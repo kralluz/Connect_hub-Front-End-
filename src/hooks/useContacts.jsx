@@ -14,7 +14,7 @@ export const useContactStState = () => {
                 const getContacts = await api.get(`/contacts/`);
                 setContacts(getContacts.data);
             } catch (error) {
-                console.log("🚀 ~ autoLogin ~ error:", error.message);
+                toast.error("Houve um erro, consulte o fornecedor!!");
             }
         }
     };
@@ -23,14 +23,10 @@ export const useContactStState = () => {
         try {
             const response = await api.post("/contacts", formData);
             if (response.status === 200) {
-                console.log("Requisição POST bem-sucedida!");
-            }
-            if (response.status != 200) {
-                console.log("Requisição POST mal-sucedida!");
+                toast.success("Contato criado com sucesso!");
             }
         } catch (error) {
-            console.log("Requisição POST mal-sucedida!");
-            console.log("Error: " + error);
+            toast.error("Houve um erro, consulte o fornecedor");
         }
     };
 
@@ -41,11 +37,10 @@ export const useContactStState = () => {
                 formData
             );
             if (response.status === 200) {
-                console.log("Requisição patch bem-sucedida!");
+                toast.success("atualizado com sucesso!");
             }
         } catch (error) {
-            console.log("Requisição patch mal-sucedida!");
-            console.log("Error: " + error);
+            toast.error("Houve um erro, consulte o fornecedor");
         }
     };
 
@@ -53,16 +48,13 @@ export const useContactStState = () => {
         try {
             const response = await api.delete(`/contacts/${contactId}`);
             if (response.status === 204) {
-                console.log("Requisição DELETE bem-sucedida!");
+                toast.success("deletado com sucesso");
             }
             if (response.status != 200) {
-                console.log(
-                    "Requisição DELETE mal-sucedida!" + response.status
-                );
+                toast;
             }
         } catch (error) {
-            console.log("Requisição DELETE mal-sucedida!" + error);
-            console.log("Error: " + error + contactId);
+            toast.error("Houve um erro, consulte o fornecedor");
         }
     };
     return {

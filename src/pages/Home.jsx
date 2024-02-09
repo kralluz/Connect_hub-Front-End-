@@ -102,11 +102,6 @@ const Home = () => {
                                             onClose={() => setShowOpen(false)}
                                             contactId={modalContact?.id}
                                             contact={modalContact}
-                                            onDelete={(id) =>
-                                                console.log(
-                                                    `Deletar contato com ID ${id}`
-                                                )
-                                            }
                                         />
 
                                         <ContactItem

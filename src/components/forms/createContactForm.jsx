@@ -14,7 +14,6 @@ const CreateContactForm = ({ onClose }) => {
 
     useEffect(() => {
         if (isSubmitSuccessful) {
-            toast.success("Contato cadastrado com sucesso!");
             reset();
             onClose();
         }
@@ -29,7 +28,7 @@ const CreateContactForm = ({ onClose }) => {
                 .join(" ");
             await createContact(data);
         } catch (error) {
-            toast.error("Falha ao cadastrar o contato.");
+            toast.error("Contato já cadastrado");
         }
     };
 

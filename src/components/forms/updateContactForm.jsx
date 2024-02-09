@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ContactContext } from "../../providers/contactProvider";
+import toast from "react-hot-toast";
 
 const UpdateContactForm = ({ contact, onClose }) => {
     const { updateContact } = useContext(ContactContext);
@@ -36,7 +37,7 @@ const UpdateContactForm = ({ contact, onClose }) => {
             toast.error("Preencha pelo menos um dos campos: nome ou telefone");
             return;
         }
-        if(data.name === contact.name || data.phone === contact.phone) {
+        if(data.name === contact.name & data.phone === contact.phone & data.email === contact.email) {
             toast.error("Nenhum dado foi alterado");
             return;
         }
