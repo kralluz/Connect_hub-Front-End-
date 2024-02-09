@@ -13,8 +13,8 @@ O front-end da aplicação ConnectHub foi desenvolvido para oferecer uma interfa
 
 
 ## Back-end
-O back-end gerencia as operações de banco de dados, autenticação e lógica de negócios. É desenvolvido com tecnologias modernas para garantir performance e segurança. Para mais informações sobre o back-end, visite o repositório:
-- **Repositório Back-end:** [https://github.com/kralluz/Connect_hub-back-end-.git](https://github.com/kralluz/Connect_hub-back-end-.git)
+O back-end gerencia as operações de banco de dados, autenticação e lógica de negócios. É desenvolvido com tecnologias modernas para garantir performance e segurança. Para mais informações sobre o back-end, visite o repositório abaixo:
+[Repositório Back-End](https://github.com/kralluz/Connect_hub-back-end-.git)
 
 
 ## Pré-requisitos
