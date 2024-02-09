@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import SessionForm from "../components/forms/SessionForm";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useClientState } from "../hooks/useClients";
 import Header from "../components/Header";
@@ -21,7 +21,7 @@ const Session = () => {
                 });
                 setTimeout(() => setIsToastDisplayed(false), 5000);
             }
-            navigate("/");
+            toast("Logado com sucesso!");
         }
     }, [token, isToastDisplayed, navigate, setIsToastDisplayed, autoLogin]);
 

@@ -11,7 +11,7 @@ const UpdateClientForm = ({ client, onClose }) => {
         register,
         handleSubmit,
         reset,
-        formState: { errors },
+        formState: { errors, isSubmitSuccessful, isSubmitting },
     } = useForm({
         defaultValues: {
             name: client ? client.name : "",
@@ -133,8 +133,14 @@ const UpdateClientForm = ({ client, onClose }) => {
                 </div>
 
                 <div className="text-center">
-                    <button type="submit" className="btn btn-primary">
-                        Atualizar
+                    <button
+                        type="submit"
+                        className={`btn ${
+                            isSubmitting ? "btn-secondary" : "btn-primary"
+                        }`}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? "Atualizando..." : "Atualizar"}
                     </button>{" "}
                     <span onClick={onClose} className="btn btn-danger">
                         Cancelar

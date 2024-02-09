@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { ClientContext } from "../../providers/clientProvider";
@@ -11,8 +11,15 @@ const SessionForm = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        reset,
+        formState: { errors, isSubmitSuccessful, isSubmitting },
     } = useForm();
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset();
+        }
+    }, [isSubmitSuccessful, reset]);
 
     const onSubmit = async (formData) => {
         clientLogin(formData);
@@ -92,8 +99,16 @@ const SessionForm = () => {
                         </div>
 
                         <div className="text-center">
-                            <button type="submit" className="btn btn-primary">
-                                Iniciar sessão
+                            <button
+                                type="submit"
+                                className={`btn ${
+                                    isSubmitting
+                                        ? "btn-secondary"
+                                        : "btn-primary"
+                                }`}
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? "Fazendo login..." : "Iniciar sessão"}
                             </button>
                         </div>
                     </form>
@@ -101,7 +116,9 @@ const SessionForm = () => {
                         {/* <Link className="btn btn-link" to="/forgot-password">
                             Esqueceu a senha?
                         </Link> */}
-                        <Link className="btn btn-link" to="/register">Cadastrar-se</Link>
+                        <Link className="btn btn-link" to="/register">
+                            Cadastrar-se
+                        </Link>
                     </div>
                 </div>
             </div>

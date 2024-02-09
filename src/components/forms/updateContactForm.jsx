@@ -9,27 +9,22 @@ const UpdateContactForm = ({ contact, onClose }) => {
         register,
         handleSubmit,
         reset,
-        formState: { errors },
-    } = useForm({
-        defaultValues: {
-            name: contact ? contact.name : "",
-            email: contact ? contact.email : "",
-            phone: contact ? contact.phone : "",
-        }
-    });
+        formState: { errors, isSubmitSuccessful, isSubmitting },
+    } = useForm();
 
     useEffect(() => {
-        if (contact) {
-            reset(contact);
+        if (isSubmitSuccessful) {
+            reset();
+            onClose();
         }
-    }, [contact, reset]);
+    }, [isSubmitSuccessful, reset, onClose]);
 
     const onSubmit = async (data) => {
         data.name = data.name
-                .toLowerCase()
-                .split(" ")
-                .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-                .join(" ");
+            .toLowerCase()
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+            .join(" ");
         const filteredData = Object.fromEntries(
             Object.entries(data).filter(([_, value]) => value !== "")
         );
@@ -37,7 +32,11 @@ const UpdateContactForm = ({ contact, onClose }) => {
             toast.error("Preencha pelo menos um dos campos: nome ou telefone");
             return;
         }
-        if(data.name === contact.name & data.phone === contact.phone & data.email === contact.email) {
+        if (
+            (data.name === contact.name) &
+            (data.phone === contact.phone) &
+            (data.email === contact.email)
+        ) {
             toast.error("Nenhum dado foi alterado");
             return;
         }
@@ -52,19 +51,33 @@ const UpdateContactForm = ({ contact, onClose }) => {
     return (
         <div className="container mt-3">
             {contact && (
-                <form onSubmit={handleSubmit(onSubmit)} className="w-100 mx-auto" style={{ maxWidth: "600px" }}>
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-100 mx-auto"
+                    style={{ maxWidth: "600px" }}
+                >
                     <div className="mb-3">
-                        <label htmlFor="name" className="form-label">Nome</label>
+                        <label htmlFor="name" className="form-label">
+                            Nome
+                        </label>
                         <input
                             {...register("name")}
-                            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                            placeholder="Nome do contato"
+                            className={`form-control ${
+                                errors.name ? "is-invalid" : ""
+                            }`}
+                            placeholder={contact.name}
                         />
-                        {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+                        {errors.name && (
+                            <div className="invalid-feedback">
+                                {errors.name.message}
+                            </div>
+                        )}
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="email" className="form-label">E-mail</label>
+                        <label htmlFor="email" className="form-label">
+                            E-mail
+                        </label>
                         <input
                             {...register("email", {
                                 pattern: {
@@ -72,26 +85,54 @@ const UpdateContactForm = ({ contact, onClose }) => {
                                     message: "Formato de e-mail inválido.",
                                 },
                             })}
-                            className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                            placeholder="E-mail do contato"
+                            className={`form-control ${
+                                errors.email ? "is-invalid" : ""
+                            }`}
+                            placeholder={contact.email}
                         />
-                        {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+                        {errors.email && (
+                            <div className="invalid-feedback">
+                                {errors.email.message}
+                            </div>
+                        )}
                     </div>
 
                     <div className="mb-3">
-                        <label htmlFor="phone" className="form-label">Número</label>
+                        <label htmlFor="phone" className="form-label">
+                            Número
+                        </label>
                         <input
                             {...register("phone")}
-                            className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
-                            placeholder="Número do contato"
+                            className={`form-control ${
+                                errors.phone ? "is-invalid" : ""
+                            }`}
+                            placeholder={contact.phone}
                         />
-                        {errors.phone && <div className="invalid-feedback">{errors.phone.message}</div>}
+                        {errors.phone && (
+                            <div className="invalid-feedback">
+                                {errors.phone.message}
+                            </div>
+                        )}
                     </div>
 
                     <div className="text-center">
-                        <button type="submit" className="btn btn-primary">Atualizar</button>
+                        <button
+                            type="submit"
+                            className={`btn ${
+                                isSubmitting ? "btn-secondary" : "btn-primary"
+                            }`}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? "Atualizando..." : "Atualizar"}
+                        </button>
                         {"  "}
-                        <button type="button" className="btn btn-danger" onClick={handleCancel}>Cancelar</button>
+                        <button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={handleCancel}
+                        >
+                            Cancelar
+                        </button>
                     </div>
                 </form>
             )}

@@ -1,11 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ClientContext } from "../../providers/clientProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
+    const navigate = useNavigate();
+
     const { clientRegister } = useContext(ClientContext);
     const [isHidden, setIsHidden] = useState(true);
     const [isConfirmHidden, setIsConfirmHidden] = useState(true);
@@ -13,15 +15,23 @@ const RegisterForm = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors },
+        reset,
+        formState: { errors, isSubmitSuccessful, isSubmitting },
     } = useForm();
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset();
+            navigate("/session");
+        }
+    }, [isSubmitSuccessful, reset]);
 
     const onSubmit = async (data) => {
         if (data.password !== data.confirmPassword) {
             toast("As senhas não coincidem");
             return;
         }
-            await clientRegister(data);
+        await clientRegister(data);
     };
 
     return (
@@ -214,8 +224,16 @@ const RegisterForm = () => {
                         </div>
 
                         <div className="text-center">
-                            <button type="submit" className="btn btn-primary">
-                                Cadastrar
+                            <button
+                                type="submit"
+                                className={`btn ${
+                                    isSubmitting
+                                        ? "btn-secondary"
+                                        : "btn-primary"
+                                }`}
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? "Cadastrando..." : "Cadastrar"}
                             </button>
                         </div>
                     </form>

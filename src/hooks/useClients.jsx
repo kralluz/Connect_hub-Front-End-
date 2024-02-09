@@ -10,35 +10,39 @@ export const useClientState = () => {
 
     const autoLogin = async (token) => {
         setIsLoading(true);
+        let toastDisplayed = false; // Flag para controle de exibição de toast
+
         async function acordarBackend(url, maxTentativas = 5) {
+            if (!toastDisplayed) {
+                toast(`Tentando conectar ao back-end.`);
+                toastDisplayed = true; // Garante que o toast será exibido apenas uma vez
+            }
+
             for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
                 try {
-                    toast(
-                        `Tentativa ${tentativa} de acordar o back-end.`
-                    );
                     const response = await fetch(url);
                     if (response.ok) {
-                        toast.success("Back-end acordado com sucesso!");
+                        toast.success("Back-end conectado com sucesso!");
                         break;
-                    } 
-                    if(response.status == 502){
-                        await fetch(url);
-                    }
-                    else {
+                    } else if (response.status === 502) {
+                        continue; 
+                    } else {
                         toast.error(
-                            `Falha na tentativa ${tentativa}. Código de resposta: ${resposta.status}`
+                            `Falha na tentativa de acessar o Back-end. Entre em contato com o fornecedor.`
                         );
+                        break;
                     }
                 } catch (erro) {
                     toast.error(`Erro na tentativa ${tentativa}: ${erro}`);
+                    break;
                 }
-                await new Promise((resolve) =>
-                    setTimeout(resolve, 1000 * tentativa)
-                );
             }
         }
 
-        acordarBackend("https://connect-hub-back-end.onrender.com/clients");
+        await acordarBackend(
+            "https://connect-hub-back-end.onrender.com/clients"
+        );
+
         if (token) {
             const { clientId } = JSON.parse(atob(token.split(".")[1]));
             const getClient = await api.get(`/clients/${clientId}`);
@@ -46,6 +50,7 @@ export const useClientState = () => {
             const getContacts = await api.get(`/contacts/`);
             setContacts(getContacts.data);
         }
+
         setIsLoading(false);
     };
 
@@ -59,12 +64,12 @@ export const useClientState = () => {
     const clientRegister = async (formData) => {
         setIsLoading(true);
         localStorage.removeItem("@CONNECT_HUB_TOKEN");
-            const response = await api.post("/clients", formData);
-            if (response.status === 200) {
-                window.location.href = "/session";
-            } else {
-                toast.error("Erro ao fazer cadastro ,consulte o fornecedor");
-            }
+        const response = await api.post("/clients", formData);
+        if (response.status === 200) {
+            window.location.href = "/session";
+        } else {
+            toast.error("Erro ao fazer cadastro ,consulte o fornecedor");
+        }
         setClient(false);
         setContacts([]);
         setIsLoading(false);
@@ -81,8 +86,6 @@ export const useClientState = () => {
             localStorage.setItem("@CONNECT_HUB_TOKEN", token);
             const clientData = response.data;
             setClient(clientData);
-            toast.success("Login bem-sucedido!");
-            window.location.href = "/";
         } catch (error) {
             toast.error("Erro ao fazer login, consulte o fornecedor");
         }

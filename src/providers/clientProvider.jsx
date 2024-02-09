@@ -37,7 +37,6 @@ export const ClientProvider = ({ children }) => {
             const response = await api.post("/clients", formData);
             if (response.status === 201) {
                 toast.success("Cadastro realizado com sucesso!");
-                window.location.href = "/session";
             } else {
                 toast.error("Erro desconhecido");
             }
@@ -115,7 +114,7 @@ export const ClientProvider = ({ children }) => {
             try {
                 const response = await api.patch(`/clients/${id}`, formData);
                 if (response.status === 200) {
-                    toast("atualizado com sucesso");
+                    toast.success("atualizado com sucesso");
                     readClient();
                 }
             } catch (error) {
