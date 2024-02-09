@@ -4,7 +4,6 @@ import { ClientContext } from "../../providers/clientProvider";
 import toast from "react-hot-toast";
 
 const UpdateClientForm = ({ client, onClose }) => {
-    const [ConfirmationOpen, setConfirmationOpen] = useState(false);
 
     const { updateClient } = useContext(ClientContext);
     const {
@@ -59,6 +58,7 @@ const UpdateClientForm = ({ client, onClose }) => {
                 style={{ maxWidth: "600px" }}
             >
                 <div className="mb-3">
+                    <label htmlFor="name" className="form-label">Nome</label>
                     <input
                         autoFocus
                         id="name"
@@ -82,6 +82,7 @@ const UpdateClientForm = ({ client, onClose }) => {
                 </div>
 
                 <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email</label>
                     <input
                         disabled
                         id="email"
@@ -112,6 +113,7 @@ const UpdateClientForm = ({ client, onClose }) => {
                 </div>
 
                 <div className="mb-3">
+                    <label htmlFor="phone" className="form-label">Telefone</label>
                     <input
                         className={`form-control ${
                             errors.phone ? "is-invalid" : ""
