@@ -3,6 +3,9 @@
 ## Sobre o Projeto
 Este repositório faz parte do projeto ConnectHub, uma aplicação full stack para cadastro e gerenciamento de clientes e seus contatos. O projeto é dividido em duas partes principais: o front-end e o back-end, cada um em seu respectivo repositório.
 
+⚠️observação⚠️ 
+Devido a hospeagem gratuita, a api pode se encontrar indisponível por inatividade, isso pode impactar o uso tanto do front, quanto do back-end, para deixa-la disponível, basta fazer algumas requisições que ela estara disponível em poucos segundos.
+
 ## Front-end
 O front-end da aplicação ConnectHub foi desenvolvido para oferecer uma interface intuitiva e responsiva para os usuários. Este projeto utiliza as tecnologias atuais [React.js](https://react.dev/), [Vite.js](https://vitejs.dev/) e [prisma](https://www.prisma.io/).
 ## Acesse a versão em proução do Front-End no vercel abaixo:
