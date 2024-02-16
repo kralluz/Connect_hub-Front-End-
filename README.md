@@ -39,9 +39,30 @@ shell
 Copy code
 
 ## Executando o Projeto
-Para rodar o projeto localmente, execute:
-npm run dev
+Para rodar o projeto localmente:
+1. Clone o repositório:
+```bash
+git clone https://github.com/kralluz/Connect_hub-Front-End-.git
+```
 
-bash
-Copy code
-O aplicativo estará disponível em `http://localhost:5173/`.
+2. Instale as dependências:
+```bash
+cd connecthub-Front-end
+npm install
+```
+3. altere a url do back-end para o ambiente correspondente:
+ vá para a pasta *./src/services/api.js*
+ no conteúdo do arquivo:
+```bash
+export const api = axios.create({
+    baseURL: "https://connect-hub-back-end.onrender.com", // url para ambiente em produção
+    //baseURL: "https://localhost:3000", // url para ambiente em desenvolvimento
+    timeout: 80000,
+});
+```
+
+4. Para iniciar o servidor:
+```bash
+npm run dev
+```
+

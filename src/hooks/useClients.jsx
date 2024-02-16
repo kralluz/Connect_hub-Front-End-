@@ -44,7 +44,6 @@ export const useClientState = () => {
         );
 
         if (token) {
-            console.log("🚀 ~ autoLogin ~ token:", token)
             const { clientId } = JSON.parse(atob(token.split(".")[1]));
             const getClient = await api.get(`/clients/${clientId}`);
             setClient(getClient.data);
