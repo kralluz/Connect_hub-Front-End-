@@ -28,7 +28,7 @@ const UpdateContactForm = ({ contact, onClose }) => {
         const filteredData = Object.fromEntries(
             Object.entries(data).filter(([_, value]) => value !== "")
         );
-        if (!data.name && !data.phone) {
+        if (!data.name && !data.phone && !data.email) {
             toast.error("Preencha pelo menos um dos campos: nome ou telefone");
             return;
         }

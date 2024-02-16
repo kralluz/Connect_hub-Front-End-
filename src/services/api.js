@@ -1,7 +1,9 @@
 import axios from "axios";
+import "dotenv/config";
+
 
 export const api = axios.create({
-    baseURL: "https://connect-hub-back-end.onrender.com",
+    baseURL: ProcessingInstruction.env.API_URL || "http://localhost:3000",
     timeout: 80000,
 });
 
