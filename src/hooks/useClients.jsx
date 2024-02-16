@@ -10,12 +10,12 @@ export const useClientState = () => {
 
     const autoLogin = async (token) => {
         setIsLoading(true);
-        let toastDisplayed = false; // Flag para controle de exibição de toast
+        let toastDisplayed = false; 
 
         async function acordarBackend(url, maxTentativas = 5) {
             if (!toastDisplayed) {
                 toast(`Tentando conectar ao back-end.`);
-                toastDisplayed = true; // Garante que o toast será exibido apenas uma vez
+                toastDisplayed = true;
             }
 
             for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
@@ -44,10 +44,11 @@ export const useClientState = () => {
         );
 
         if (token) {
+            console.log("🚀 ~ autoLogin ~ token:", token)
             const { clientId } = JSON.parse(atob(token.split(".")[1]));
             const getClient = await api.get(`/clients/${clientId}`);
             setClient(getClient.data);
-            const getContacts = await api.get(`/contacts/`);
+            const getContacts = await api.get(`/contacts/`); 
             setContacts(getContacts.data);
         }
 
