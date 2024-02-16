@@ -92,7 +92,7 @@ const Home = () => {
                             contacts
                                 .sort((a, b) => a.name.localeCompare(b.name))
                                 .map((contact) => (
-                                    <>
+                                    <React.Fragment key={contact.id}>
                                         <ShowContactModal
                                             isOpen={
                                                 isShowOpen &&
@@ -111,7 +111,7 @@ const Home = () => {
                                             onUpdate={() => setUpdateOpen(true)}
                                             onDelete={() => setDeleteOpen(true)}
                                         />
-                                    </>
+                                    </React.Fragment>
                                 ))
                         ) : (
                             <h2 className="text-center">

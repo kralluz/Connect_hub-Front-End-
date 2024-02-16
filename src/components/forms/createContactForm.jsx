@@ -28,7 +28,7 @@ const CreateContactForm = ({ onClose }) => {
                 .join(" ");
             await createContact(data);
         } catch (error) {
-            toast.error("Contato já cadastrado");
+            toast.error(error.message, "Contato já cadastrado");
         }
     };
 
