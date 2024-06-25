@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://connect-hub-back-end.onrender.com", // url para ambiente em produção
+    baseURL: "https://connect-hub-back-end-1.onrender.com/", // url para ambiente em produção
     //baseURL: "https://localhost:3000", // url para ambiente em desenvolvimento
     timeout: 80000,
 });
