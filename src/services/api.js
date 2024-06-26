@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-    baseURL: "https://connect-hub-front-end-git-main-kralluzs-projects.vercel.app/session",
+    baseURL: "https://connect-hub-back-end-1.onrender.com/",
     //baseURL: "https://localhost:3000", // url para ambiente em desenvolvimento
     timeout: 80000,
 });
