@@ -35,16 +35,6 @@ const Home = () => {
         autoLogin(token);
     }, [token]);
 
-    useEffect(() => {
-        if (isLoading && !isToastDisplayed) {
-            setIsToastDisplayed(true);
-            const loadingToast = toast.loading("Carregando...");
-            setTimeout(() => {
-                toast.dismiss(loadingToast.id);
-                setIsToastDisplayed(false);
-            }, 3000);
-        }
-    }, [isLoading, isToastDisplayed]);
     const openShowContactModal = (contact) => {
         setModalContact(contact);
         setShowOpen(true);

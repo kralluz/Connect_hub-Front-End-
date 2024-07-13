@@ -36,7 +36,6 @@ const CreateContactForm = ({ onClose }) => {
         <>
             <Toaster />
             <div className="container mt-5">
-                <h1 className="mb-4">Criar Contato</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-100 mx-auto"

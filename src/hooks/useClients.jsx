@@ -14,7 +14,7 @@ export const useClientState = () => {
 
         async function acordarBackend(url, maxTentativas = 5) {
             if (!toastDisplayed) {
-                toast(`Tentando conectar ao back-end.`);
+                toast(`Conectando ao back-end.`);
                 toastDisplayed = true;
             }
 
